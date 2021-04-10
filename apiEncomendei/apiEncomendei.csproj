@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <Folder Include="Enum\" />
+    <Folder Include="Persistence\Migrations\" />
+    <Folder Include="Persistence\Scripts\" />
   </ItemGroup>
 
 </Project>

@@ -9,34 +9,64 @@ namespace apiEncomendei.Controllers
     [Route("api/consumidor")]
     public class CustomerController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult Get()
+        private readonly EncomendeiDbContext _dbContext;
+        public CustomerController(EncomendeiDbContext dbContext)
         {
-            return Ok();
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-        {
-            return Ok();
+            _dbContext = dbContext;
         }
 
         [HttpPost]
-        public IActionResult Post()
+        public IActionResult Post([FromBody] AddCustomerInputModel model)
         {
-            return Ok();
+            var customer = new Customer(model.FullName, model.Document, model.BirthDate);
+
+            _dbContext.Customers.Add(customer);
+            _dbContext.SaveChanges();
+
+            return NoContent();
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Put(int id)
+        [HttpPost("{id}/orders")]
+        public IActionResult PostOrder(int id, [FromBody] AddOrderInputModel model)
         {
-            return Ok();
+            var extraItems = model.ExtraItems
+                .Select(e => new ExtraOrderItem(e.Description, e.Price))
+                .ToList();
+
+            var car = _dbContext.Cars.SingleOrDefault(c => c.Id == model.IdCar);
+
+            var order = new Order(model.IdCar, model.IdCustomer, car.Price, extraItems);
+
+            _dbContext.Orders.Add(order);
+            _dbContext.SaveChanges();
+
+            return CreatedAtAction(
+                nameof(GetOrder),
+                new { id = order.IdCustomer, orderid = order.Id },
+                model
+                );
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult RemoveById(int id)
+        [HttpGet("{id}/orders/{orderid}")]
+        public IActionResult GetOrder(int id, int orderid)
         {
-            return Ok();
+            var order = _dbContext.Orders
+                .Include(o => o.ExtraItems)
+                .SingleOrDefault(o => o.Id == orderid);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var extraItems = order
+                .ExtraItems
+                .Select(e => e.Description)
+                .ToList();
+
+            var orderViewModel = new OrderDetailsViewModel(order.IdCar, order.IdCustomer, order.TotalCost, extraItems);
+
+            return Ok(orderViewModel);
         }
     }
 }
