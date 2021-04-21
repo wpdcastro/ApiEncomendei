@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 namespace apiEncomendei.Controllers
 {
     [Route("api/produtos")]
-    public class ProductsController : ControllerBase
+    public class ProductController : ControllerBase
     {
         public ProductService ProductService { get; set; }
-        public ProductsController()
+        public ProductController()
         {
             ProductService = new ProductService();
         }

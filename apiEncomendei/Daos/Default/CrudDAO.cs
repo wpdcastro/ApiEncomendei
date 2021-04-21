@@ -12,6 +12,7 @@ using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using apiEncomendei.Entities;
 
 namespace apiEncomendei.Daos.Default
 {
@@ -45,8 +46,6 @@ namespace apiEncomendei.Daos.Default
             }
             DbSet = Db.Set<TEntity>();
             Db.Database.Log = query => Debug.Write(query);
-
-
         }
 
         public virtual List<TEntity> ListAll()
@@ -90,9 +89,6 @@ namespace apiEncomendei.Daos.Default
                         // Choose an initial set of resolved values. In this case we
                         // make the default be the values currently in the database.
                         var resolvedValuesAsTEntity = (TEntity)databaseValues.ToObject();
-
-
-
 
                         // Update the original values with the database values and
                         // the current values with whatever the user choose.

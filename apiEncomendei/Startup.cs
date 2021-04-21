@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using apiEncomendei.Entities;
 
 namespace apiEncomendei
 {
@@ -27,6 +29,7 @@ namespace apiEncomendei
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("Encomendei"));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

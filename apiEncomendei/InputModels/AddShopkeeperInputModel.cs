@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace apiEncomendei.Entities
+namespace apiEncomendei.InputModels
 {
-    public class Product : Entity
+    public class AddShopkeeperInputModel
     {
-        public string NomeProduto { get; set; }
         public string Descricao { get; set; }
-        public decimal Preco { get; set; }
+        public string NomeLoja { get; set; }
     }
 }

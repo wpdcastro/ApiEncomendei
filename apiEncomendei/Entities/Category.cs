@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace apiEncomendei.Entities
 {
-    public class Product : Entity
+    public class Category : Entity
     {
-        public string NomeProduto { get; set; }
         public string Descricao { get; set; }
-        public decimal Preco { get; set; }
+        public string Cor { get; set; }
     }
 }
